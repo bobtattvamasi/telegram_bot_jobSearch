@@ -1,0 +1,54 @@
+# Job Tracker Bot 🤖
+
+Telegram-бот для трекинга откликов на вакансии.
+
+## Быстрый старт
+
+### 1. Клонировать и установить
+```bash
+git clone https://github.com/YOUR_USERNAME/job-tracker-bot.git
+cd job-tracker-bot
+make install
+```
+2. Настроить
+```bash
+
+cp .env.example .env
+# Вставить BOT_TOKEN от @BotFather
+```
+3. Запустить
+```bash
+
+make run
+```
+Docker
+```bash
+
+make docker-build
+make docker-run
+```
+## Команды бота
+Команда	Описание
+/start	Приветствие и инструкция
+/add <компания> <позиция> [ссылка]	Добавить отклик
+/list [статус]	Список откликов
+/status <id> <статус>	Обновить статус
+/delete <id>	Удалить отклик
+/stats	Статистика
+/remind	Где нет ответа >7 дней
+Статусы
+applied → interview → test_task → offer
+applied → rejected
+applied → ghosted (авто через 14 дней)
+
+Разработка
+```bash
+
+make lint        # Проверка кода
+make type-check  # Проверка типов
+make test        # Запуск тестов
+make format      # Автоформатирование
+```
+
+## Roadmap
+See ROADMAP.md
