@@ -1,19 +1,21 @@
-FROM python:3.12-slim AS base
+FROM python:3.11-slim
 
 WORKDIR /app
 
-RUN groupadd -r botuser && useradd -r -g botuser botuser
+# Copy dependency files first for layer caching
+COPY pyproject.toml ./
 
-COPY pyproject.toml .
-RUN pip install --no-cache-dir . && \
-    pip install --no-cache-dir .[dev]
+# Install production dependencies only
+RUN pip install --no-cache-dir .
 
-COPY . .
+# Copy source code
+COPY src/ ./src/
 
-RUN chown -R botuser:botuser /app
-USER botuser
+# Create data directory for SQLite
+RUN mkdir -p /app/data
 
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD python -c "import sys; sys.exit(0)"
+# Run as non-root user
+RUN useradd --create-home appuser && chown -R appuser:appuser /app
+USER appuser
 
-CMD ["python", "-m", "src.bot"]
+CMD ["python", "-m", "src"]

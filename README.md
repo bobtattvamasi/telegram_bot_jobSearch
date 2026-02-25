@@ -1,41 +1,84 @@
-# Job Tracker Bot 🤖
+# 🤖 Job Tracker Bot
 
-Telegram-бот для трекинга откликов на вакансии.
+Telegram-бот для отслеживания откликов на вакансии.
+
+## Возможности
+
+- ➕ `/add` — добавить отклик на вакансию
+- 📋 `/list` — показать все отклики (с фильтром по статусу)
+- 🔄 `/status` — обновить статус отклика
+- 🗑 `/delete` — удалить отклик
+- 📊 `/stats` — статистика по откликам
+- ⏰ `/remind` — показать отклики без ответа (>7 дней)
+- 👻 Автоматическое определение ghosted (>14 дней без ответа)
+
+## Статусы
+
+| Статус | Описание |
+|--------|----------|
+| applied | Отклик отправлен |
+| interview | Приглашение на интервью |
+| test_task | Тестовое задание |
+| offer | Оффер |
+| rejected | Отказ |
+| ghosted | Нет ответа 14+ дней |
 
 ## Быстрый старт
 
+### Локально
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/job-tracker-bot.git
+# Клонировать
+git clone <repo-url>
 cd job-tracker-bot
-pip install -e ".[dev]"
+
+# Настроить
 cp .env.example .env
-# Insert BOT_TOKEN from @BotFather
+# Вписать BOT_TOKEN в .env
+
+# Установить
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# Запустить
 make run
 Docker
 bash
 
+cp .env.example .env
+# Вписать BOT_TOKEN в .env
+
 make docker-build
 make docker-run
-Команды
-Команда	Описание
-/start	Приветствие и инструкция
-/add <компания> <позиция> [ссылка]	Добавить отклик
-/list [статус]	Список откликов
-/status <id> <статус>	Обновить статус
-/delete <id>	Удалить отклик
-/stats	Статистика
-/remind	Нет ответа >7 дней
-Статусы
-applied → interview → test_task → offer
-applied → rejected
-applied → ghosted (авто, 14 дней)
-
+make docker-logs
 Разработка
 bash
 
-make lint
-make type-check
-make test
-make format
-Roadmap
-See docs/ROADMAP.md
+make test       # Запустить тесты
+make lint       # Проверить код
+make format     # Отформатировать код
+make test-cov   # Тесты с покрытием
+Стек
+Python 3.11+
+aiogram 3.x
+aiosqlite (SQLite)
+APScheduler
+pydantic v2
+Структура проекта
+
+src/
+├── bot.py          # Entry point
+├── config.py       # Settings (pydantic-settings)
+├── models.py       # Domain models
+├── storage.py      # Database layer
+├── scheduler.py    # Cron jobs
+└── handlers/
+    ├── start.py    # /start, /help
+    ├── add.py      # /add
+    ├── list.py     # /list
+    ├── status.py   # /status
+    ├── delete.py   # /delete
+    ├── stats.py    # /stats
+    ├── remind.py   # /remind
+    └── fallback.py # Unknown messages

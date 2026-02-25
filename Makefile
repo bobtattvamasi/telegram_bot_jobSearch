@@ -1,40 +1,33 @@
-.PHONY: install lint type-check test test-cov run docker-build docker-run clean
+.PHONY: run test lint format docker-build docker-run docker-stop clean
 
-install:
-	pip install -e ".[dev]"
+run:
+	python -m src
+
+test:
+	pytest tests/ -v --no-cov
+
+test-cov:
+	pytest tests/ -v
 
 lint:
 	ruff check src tests
 	ruff format --check src tests
+	mypy src
 
 format:
 	ruff format src tests
-	ruff check --fix src tests
-
-type-check:
-	mypy src
-
-test:
-	pytest
-
-test-cov:
-	pytest --cov=src --cov-report=html
-
-run:
-	python -m src.bot
 
 docker-build:
-	docker compose build
+	docker build -t job-tracker-bot .
 
 docker-run:
 	docker compose up -d
 
-docker-logs:
-	docker compose logs -f
-
 docker-stop:
 	docker compose down
 
+docker-logs:
+	docker compose logs -f
+
 clean:
-	rm -rf .pytest_cache .mypy_cache .ruff_cache htmlcov .coverage
-	find . -type d -name __pycache__ -exec rm -rf {} +
+	rm -rf .venv* __pycache__ .pytest_cache .mypy_cache *.egg-info
