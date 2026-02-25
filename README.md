@@ -52,33 +52,35 @@ cp .env.example .env
 make docker-build
 make docker-run
 make docker-logs
-Разработка
-bash
+```
+## Разработка
+```bash
 
 make test       # Запустить тесты
 make lint       # Проверить код
 make format     # Отформатировать код
 make test-cov   # Тесты с покрытием
-Стек
-Python 3.11+
-aiogram 3.x
-aiosqlite (SQLite)
-APScheduler
-pydantic v2
-Структура проекта
+```
+## Стек
+Python 3.11+  
+aiogram 3.x  
+aiosqlite (SQLite)  
+APScheduler  
+pydantic v2  
+## Структура проекта
 
-src/
-├── bot.py          # Entry point
-├── config.py       # Settings (pydantic-settings)
-├── models.py       # Domain models
-├── storage.py      # Database layer
-├── scheduler.py    # Cron jobs
-└── handlers/
-    ├── start.py    # /start, /help
-    ├── add.py      # /add
-    ├── list.py     # /list
-    ├── status.py   # /status
-    ├── delete.py   # /delete
-    ├── stats.py    # /stats
-    ├── remind.py   # /remind
-    └── fallback.py # Unknown messages
+src/   
+├── bot.py          # Entry point  
+├── config.py       # Settings (pydantic-settings)  
+├── models.py       # Domain models  
+├── storage.py      # Database layer  
+├── scheduler.py    # Cron jobs  
+└── handlers/  
+    ├── start.py    # /start, /help  
+    ├── add.py      # /add  
+    ├── list.py     # /list  
+    ├── status.py   # /status  
+    ├── delete.py   # /delete  
+    ├── stats.py    # /stats  
+    ├── remind.py   # /remind  
+    └── fallback.py # Unknown messages  

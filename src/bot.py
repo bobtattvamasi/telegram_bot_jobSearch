@@ -20,6 +20,10 @@ from src.storage import Storage
 
 async def main() -> None:
     """Initialize application services and start bot polling."""
+    import os
+
+    logging.basicConfig(level=logging.DEBUG)
+    logging.debug("BOT_TOKEN env present: %s", "BOT_TOKEN" in os.environ)
     settings = Settings()  # type: ignore[call-arg]
 
     logging.basicConfig(
