@@ -1,0 +1,112 @@
+{
+  "phase": 1,
+  "title": "MVP — Job Tracker Bot",
+  "tasks": [
+    {
+      "id": "1.1",
+      "title": "Config and models",
+      "status": "todo",
+      "files_to_create": ["src/config.py", "src/models.py"],
+      "files_to_test": ["tests/test_models.py"],
+      "instructions": [
+        "In src/config.py: create Settings class using pydantic-settings BaseSettings. Fields: bot_token (str), db_path (str, default='data/tracker.db'), log_level (str, default='INFO'), reminder_hour (int, default=10), reminder_days_threshold (int, default=7), ghosted_days_threshold (int, default=14). Use model_config with env_file='.env'.",
+        "In src/models.py: create Status(str, Enum) with values: applied, interview, test_task, offer, rejected, ghosted. Create JobApplication(BaseModel) with fields: id (int), user_id (int), company (str), position (str), url (str | None), status (Status), created_at (datetime), updated_at (datetime).",
+        "In tests/test_models.py: test Status enum has 6 values, test JobApplication valid creation, test invalid status rejected, test url is optional."
+      ],
+      "acceptance_criteria": ["make lint passes", "make type-check passes", "make test passes", "4+ test functions"]
+    },
+    {
+      "id": "1.2",
+      "title": "Storage layer",
+      "status": "todo",
+      "depends_on": ["1.1"],
+      "files_to_create": ["src/storage.py"],
+      "files_to_test": ["tests/test_storage.py"],
+      "instructions": [
+        "Create Storage class with db_path init param. Implement: init_db(), add_application(), get_applications(), update_status(), delete_application(), get_stale_applications(), get_stats(). Define exceptions: ApplicationNotFound, InvalidStatus.",
+        "All methods async via aiosqlite. Filter by user_id in every query for data isolation.",
+        "Tests: use ':memory:' db fixture. 10+ test functions covering add, get, filter, update, delete, stale, stats, not_found, wrong_user."
+      ],
+      "acceptance_criteria": ["make test passes", "10+ test functions", "storage.py coverage >= 90%"]
+    },
+    {
+      "id": "1.3",
+      "title": "Bot entry point and /start handler",
+      "status": "todo",
+      "depends_on": ["1.2"],
+      "files_to_create": ["src/bot.py", "src/handlers/start.py"],
+      "files_to_test": ["tests/test_handler_start.py"],
+      "instructions": [
+        "In src/bot.py: async main() that creates Bot, Dispatcher, Storage, registers all handlers, starts polling. Call storage.init_db() on startup.",
+        "In src/handlers/start.py: /start and /help return Russian welcome message listing all commands.",
+        "Tests: mock Message, verify response contains command names."
+      ],
+      "acceptance_criteria": ["make test passes", "bot starts with make run"]
+    },
+    {
+      "id": "1.4",
+      "title": "/add handler",
+      "status": "todo",
+      "depends_on": ["1.3"],
+      "files_to_create": ["src/handlers/add.py"],
+      "files_to_test": ["tests/test_handler_add.py"],
+      "instructions": [
+        "Parse: /add <company> <position> [url]. Support quoted multi-word args.",
+        "Return: '✅ #{id} {company} — {position} — APPLIED ({date})'.",
+        "Tests: valid with url, valid without url, missing args, quoted company."
+      ],
+      "acceptance_criteria": ["make test passes", "4+ tests"]
+    },
+    {
+      "id": "1.5",
+      "title": "/list handler",
+      "status": "todo",
+      "depends_on": ["1.4"],
+      "files_to_create": ["src/handlers/list.py"],
+      "files_to_test": ["tests/test_handler_list.py"],
+      "instructions": [
+        "Handle /list and /list <status>. Format: '{emoji} #{id} {company} — {position} — {STATUS} ({days}д назад)'. Emoji: applied=📨, interview=🔄, test_task=📝, offer=✅, rejected=❌, ghosted=👻. Stale (>7d) gets ⚠️.",
+        "Tests: empty, with data, filtered, stale warning."
+      ],
+      "acceptance_criteria": ["make test passes", "4+ tests"]
+    },
+    {
+      "id": "1.6",
+      "title": "/status, /delete, /stats, /remind handlers",
+      "status": "todo",
+      "depends_on": ["1.5"],
+      "files_to_create": ["src/handlers/status.py", "src/handlers/delete.py", "src/handlers/stats.py", "src/handlers/remind.py"],
+      "files_to_test": ["tests/test_handler_status.py", "tests/test_handler_delete.py", "tests/test_handler_stats.py", "tests/test_handler_remind.py"],
+      "instructions": [
+        "/status <id> <new_status>: update and return card. /delete <id>: delete and confirm. /stats: counts per status. /remind: stale >7 days.",
+        "3+ tests per handler."
+      ],
+      "acceptance_criteria": ["make test passes", "12+ total tests"]
+    },
+    {
+      "id": "1.7",
+      "title": "Scheduler",
+      "status": "todo",
+      "depends_on": ["1.6"],
+      "files_to_create": ["src/scheduler.py"],
+      "files_to_test": ["tests/test_scheduler.py"],
+      "instructions": [
+        "setup_scheduler(storage, bot): daily job at REMINDER_HOUR. Auto-mark applied >14 days as ghosted. Notify user.",
+        "Tests: mock storage/bot, verify status change and notification."
+      ],
+      "acceptance_criteria": ["make test passes", "3+ tests"]
+    },
+    {
+      "id": "1.8",
+      "title": "Docker and deploy",
+      "status": "todo",
+      "depends_on": ["1.7"],
+      "files_to_create": [],
+      "files_to_test": [],
+      "instructions": [
+        "Verify docker-compose build and run. Deploy to Railway or Fly.io. Bot responds from deployed instance."
+      ],
+      "acceptance_criteria": ["Bot runs in Docker", "CI green", "Bot live in Telegram"]
+    }
+  ]
+}

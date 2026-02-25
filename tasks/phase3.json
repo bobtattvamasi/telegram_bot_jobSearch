@@ -1,0 +1,9 @@
+{
+  "phase": 3,
+  "title": "Telegram Group Monitoring",
+  "tasks": [
+    {"id": "3.1", "title": "Telethon integration", "status": "todo", "depends_on": ["2.3"]},
+    {"id": "3.2", "title": "Job post extraction", "status": "todo", "depends_on": ["3.1"]},
+    {"id": "3.3", "title": "Web dashboard", "status": "todo", "depends_on": ["3.2"]}
+  ]
+}

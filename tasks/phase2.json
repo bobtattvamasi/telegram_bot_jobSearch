@@ -1,0 +1,9 @@
+{
+  "phase": 2,
+  "title": "AI Features",
+  "tasks": [
+    {"id": "2.1", "title": "LLM integration setup", "status": "todo", "depends_on": ["1.8"]},
+    {"id": "2.2", "title": "/evaluate command", "status": "todo", "depends_on": ["2.1"]},
+    {"id": "2.3", "title": "/cover command", "status": "todo", "depends_on": ["2.1"]}
+  ]
+}

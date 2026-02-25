@@ -4,30 +4,19 @@ Telegram-бот для трекинга откликов на вакансии.
 
 ## Быстрый старт
 
-### 1. Клонировать и установить
 ```bash
 git clone https://github.com/YOUR_USERNAME/job-tracker-bot.git
 cd job-tracker-bot
-make install
-```
-2. Настроить
-```bash
-
+pip install -e ".[dev]"
 cp .env.example .env
-# Вставить BOT_TOKEN от @BotFather
-```
-3. Запустить
-```bash
-
+# Insert BOT_TOKEN from @BotFather
 make run
-```
 Docker
-```bash
+bash
 
 make docker-build
 make docker-run
-```
-## Команды бота
+Команды
 Команда	Описание
 /start	Приветствие и инструкция
 /add <компания> <позиция> [ссылка]	Добавить отклик
@@ -35,20 +24,18 @@ make docker-run
 /status <id> <статус>	Обновить статус
 /delete <id>	Удалить отклик
 /stats	Статистика
-/remind	Где нет ответа >7 дней
+/remind	Нет ответа >7 дней
 Статусы
 applied → interview → test_task → offer
 applied → rejected
-applied → ghosted (авто через 14 дней)
+applied → ghosted (авто, 14 дней)
 
 Разработка
-```bash
+bash
 
-make lint        # Проверка кода
-make type-check  # Проверка типов
-make test        # Запуск тестов
-make format      # Автоформатирование
-```
-
-## Roadmap
-See ROADMAP.md
+make lint
+make type-check
+make test
+make format
+Roadmap
+See docs/ROADMAP.md
