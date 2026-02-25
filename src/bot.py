@@ -14,6 +14,7 @@ from src.handlers.remind import router as remind_router
 from src.handlers.start import router as start_router
 from src.handlers.stats import router as stats_router
 from src.handlers.status import router as status_router
+from src.scheduler import setup_scheduler
 from src.storage import Storage
 
 
@@ -41,8 +42,14 @@ async def main() -> None:
     dp.include_router(fallback_router)
     dp["storage"] = storage
 
+    scheduler = setup_scheduler(storage, bot, settings.reminder_hour)
+    scheduler.start()
+    logging.info("Scheduler started")
     logging.info("Bot started")
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        scheduler.shutdown()
 
 
 if __name__ == "__main__":

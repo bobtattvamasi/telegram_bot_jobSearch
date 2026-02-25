@@ -235,6 +235,13 @@ class Storage:
 
         return [self._row_to_application(row) for row in rows]
 
+    async def get_all_user_ids(self) -> list[int]:
+        """Get all distinct user IDs from the database."""
+        async with aiosqlite.connect(self._db_path) as db:
+            cursor = await db.execute("SELECT DISTINCT user_id FROM applications")
+            rows = await cursor.fetchall()
+            return [int(row[0]) for row in rows]
+
     async def get_stats(self, user_id: int) -> dict[str, int]:
         """Return status counters for a user with total count.
 
