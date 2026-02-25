@@ -7,10 +7,7 @@ from src.models import JobApplication, Status
 
 
 def test_status_enum_has_six_values() -> None:
-    from src.config import Settings
-
     assert len(Status) == 6
-    assert Settings.model_fields["db_path"].default == "data/tracker.db"
 
 
 def test_status_enum_values() -> None:

@@ -2,7 +2,7 @@
 name = "job-tracker-bot"
 version = "0.1.0"
 description = "Telegram bot for tracking job applications"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "aiogram>=3.15.0",
     "aiosqlite>=0.20.0",
@@ -22,6 +22,7 @@ dev = [
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
 addopts = "-v --cov=src --cov-report=term-missing --cov-fail-under=90"
 
@@ -31,7 +32,7 @@ line-length = 99
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "ANN", "B", "A", "SIM", "TCH"]
-ignore = ["ANN101", "ANN102"]
+ignore = []
 
 [tool.mypy]
 python_version = "3.12"
@@ -41,4 +42,4 @@ warn_unused_configs = true
 
 [build-system]
 requires = ["setuptools>=75.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
