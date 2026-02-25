@@ -1,6 +1,7 @@
 """Async storage layer for job application CRUD operations."""
 
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 import aiosqlite
 
@@ -28,6 +29,7 @@ class Storage:
 
     async def init_db(self) -> None:
         """Initialize database schema and indexes."""
+        Path(self._db_path).parent.mkdir(parents=True, exist_ok=True)
         async with aiosqlite.connect(self._db_path) as db:
             await db.execute(
                 """
